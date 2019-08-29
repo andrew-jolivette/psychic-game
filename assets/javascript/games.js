@@ -10,10 +10,12 @@ var guessMade = [];
 
 // initial output values to screen
 function scoreBoard() {
+  var guessMadeString = guessMade.join(', '); //adding commas
+  
   document.querySelector("#wins").innerHTML = `Wins: ${wins}`;
   document.querySelector("#losses").innerHTML = `Losses: ${losses}`;
   document.querySelector("#guess-remaining").innerHTML = `Guesses Remaining: ${guesses}`;
-  document.querySelector('#guess-made').innerHTML = `Your guesses: ${guessMade.toString()}`;
+  document.querySelector('#guess-made').innerHTML = `Your guesses: ${guessMadeString.toString()}`;
 }
 
 scoreBoard();
@@ -36,29 +38,34 @@ document.onkeyup = function(event) {
   // checks to make sure playerInput is a-z
   var validKey = alphabet.includes(playerInput);
   console.log(validKey);
+  var guessedBefore = guessMade.includes(playerInput);
 
-  if (validKey && playerInput === alphaRand) {
-    alert("Drats you guessed it!");
+  if (validKey && playerInput === alphaRand & !guessedBefore) {
+    alert("Drats you guessed it! I'm going to pick another letter...");
     wins++;
-    document.querySelector("#wins").innerHTML = `Wins: ${wins}`;
+    guessMade = [];
+    scoreBoard();
     pick();
   } else if (!validKey) {
     alert('Invalid Key Input');
+  } else if(guessedBefore) {
+    alert(`You already guessed ${playerInput}. Try another letter.`)
   } else {
     guesses--;
-    //push guess to guessMade array
-    document.querySelector("#guess-remaining").innerHTML = `Guesses Remaining: ${guesses}`;
-    document.querySelector('#guess-made').innerHTML = `Your guesses: ${guessMade.toString()}`;
+    guessMade.push(playerInput);
+    scoreBoard();
   }
   if (guesses === 0) {
+    scoreBoard();
     alert(`Fooled you! I picked "${alphaRand}". Refocus your mind and try again!`)
     losses++;
-    document.querySelector("#losses").innerHTML = `Losses: ${losses}`;
     guesses = 10;
-    document.querySelector("#guess-remaining").innerHTML = `Guesses Remaining: ${guesses}`;
+    guessMade = [];
+    scoreBoard();
     pick();
   }
-  if (wins === 3) {
+  if (wins === 10) {
+    scoreBoard();
     if (confirm('You ARE psychic, wow! Would you like to play again?')) {
       wins = 0;
       losses = 0;
@@ -70,7 +77,7 @@ document.onkeyup = function(event) {
       return;
     }
   }
-  if (losses === 3) {
+  if (losses === 10) {
     if (confirm('Nice try, friend. Would you like a rematch?')) {
       wins = 0;
       losses = 0;
