@@ -1,0 +1,22 @@
+h1 {
+  font-size: 40px;
+  margin-top: 10px;
+  margin-left: 10px;  
+}
+
+h2 {
+  font-size: 20px;  
+  margin-top: 15px;
+  margin-left: 35px;
+}
+
+h3 {
+  font-size: 15px;  
+  margin-top: 5px;
+  margin-left: 45px;
+}
+
+p {
+  margin-top: 15px;
+  margin-left: 10px;
+}
